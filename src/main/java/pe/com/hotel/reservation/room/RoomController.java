@@ -26,15 +26,10 @@ public class RoomController {
 
     private final RoomService roomService;
 
-    // GET /api/rooms
+    // GET /apt/rooms
     @GetMapping
     public ResponseEntity<Page<RoomResponse>> getAllRooms(Pageable pageable) {
-        // ResponseEntity te da control total sobre:
-        //   - El body (los datos)
-        //   - El status HTTP (200, 201, 404, etc.)
-        //   - Los headers
         return ResponseEntity.ok(roomService.getAllRooms(pageable));
-        // .ok() = HTTP 200
     }
 
     // GET /api/rooms/5
@@ -61,17 +56,11 @@ public class RoomController {
 //        // Spring convierte automáticamente el String "2026-04-01" a LocalDate
 //        return ResponseEntity.ok(roomService.getAvailableRooms(type, checkIn, checkOut));
 //    }
-
     // POST /api/rooms
     @PostMapping
     public ResponseEntity<RoomResponse> createRoom(@Valid @RequestBody CreateRoomRequest request) {
-        // @Valid → activa las validaciones del DTO (@NotBlank, @NotNull, etc.)
-        //          Si alguna falla, Spring lanza MethodArgumentNotValidException
-        //          que nuestro GlobalExceptionHandler capturará
-        // @RequestBody → deserializa el JSON del body a CreateRoomRequest
         RoomResponse created = roomService.createRoom(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
-        // HTTP 201 Created → indica que se creó un recurso nuevo
     }
 
     // PUT /api/rooms/5
@@ -85,8 +74,12 @@ public class RoomController {
 
     // DELETE /api/rooms/5
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRoom(@PathVariable Long id) {
-        roomService.deleteRoom(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<RoomResponse> deleteRoom(@PathVariable Long id) {
+        return ResponseEntity.ok(roomService.deleteRoom(id));
+    }
+
+    @PatchMapping("/{id}/enable")
+    public ResponseEntity<RoomResponse> enableRoom(@PathVariable Long id){
+        return ResponseEntity.ok(roomService.enableRoom(id));
     }
 }

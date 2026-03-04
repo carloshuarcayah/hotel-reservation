@@ -19,8 +19,6 @@ import java.util.Optional;
 public class RoomService {
     private final RoomRepository roomRepository;
 
-    // ==================== QUERIES ====================
-
     public Page<RoomResponse> getAllRooms(Pageable pageable) {
         return roomRepository.findAll(pageable).map(RoomResponse::fromEntity);
     }
@@ -88,14 +86,23 @@ public class RoomService {
     }
 
     @Transactional
-    public void deleteRoom(Long id) {
+    public RoomResponse deleteRoom(Long id) {
         Room room = findRoomOrThrow(id);
-//verificar si hay reservaciones para la habitacion activa, luegolo hacemos
+        //todo: verificar que no eliminemos una habitacion que tiene reservas
         room.setActive(false);
+
+        return RoomResponse.fromEntity(room);
     }
 
+    @Transactional
+    public RoomResponse enableRoom(Long id) {
+        Room room = findRoomOrThrow(id);
+        return RoomResponse.fromEntity(room);
+    }
+
+    //HELPERS
     private Room findRoomOrThrow(Long id) {
         return roomRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Habitación no encontrada con id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Room not found with id: " + id));
     }
 }
