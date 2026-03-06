@@ -38,4 +38,7 @@ public class Guest {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @Column(nullable = false)
+    private Boolean active;
 }
