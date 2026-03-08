@@ -41,15 +41,13 @@ public class RoomService {
         return roomRepository.findByStatus(roomStatus,pageable).map(RoomResponse::fromEntity);
     }
 
-//    public Page<RoomResponse> getAvailableRooms(RoomType roomType, LocalDate checkIn, LocalDate checkOut) {
-//        if (checkOut.isBefore(checkIn) || checkOut.isEqual(checkIn)) {
-//            throw new IllegalArgumentException("Date must be valid.");
-//        }
-//        return roomRepository.findAvailableRooms(roomType, checkIn, checkOut)
-//                .stream()
-//                .map(RoomResponse::fromEntity)
-//                .toList();
-//    }
+    public Page<RoomResponse> getAvailableRooms(RoomType roomType, LocalDate checkIn, LocalDate checkOut,Pageable pageable) {
+        if (checkOut.isBefore(checkIn) || checkOut.isEqual(checkIn)) {
+            throw new IllegalArgumentException("Date must be valid.");
+        }
+        return roomRepository.findAvailableRooms(roomType, checkIn, checkOut,pageable)
+                .map(RoomResponse::fromEntity);
+    }
 
     @Transactional
     public RoomResponse createRoom(CreateRoomRequest request) {

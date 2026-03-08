@@ -14,13 +14,7 @@ import pe.com.hotel.reservation.room.dto.UpdateRoomRequest;
 import java.time.LocalDate;
 
 @RestController
-// Combina @Controller + @ResponseBody
-// Todos los métodos devuelven datos (JSON) directamente, no vistas HTML
-
 @RequestMapping("/api/rooms")
-// Prefijo de ruta para TODOS los endpoints de este controller
-// Todas las rutas empiezan con /api/rooms
-
 @RequiredArgsConstructor
 public class RoomController {
 
@@ -45,17 +39,14 @@ public class RoomController {
         return ResponseEntity.ok(roomService.getRoomsByType(roomType,pageable));
     }
 
-//    // GET /api/rooms/available?type=DOUBLE&checkIn=2026-04-01&checkOut=2026-04-05
-//    @GetMapping("/available")
-//    public ResponseEntity<Page<RoomResponse>> getAvailableRooms(
-//            @RequestParam RoomType type,
-//            @RequestParam LocalDate checkIn,
-//            @RequestParam LocalDate checkOut
-//    ) {
-//        // @RequestParam extrae los parámetros de la URL (?type=...&checkIn=...)
-//        // Spring convierte automáticamente el String "2026-04-01" a LocalDate
-//        return ResponseEntity.ok(roomService.getAvailableRooms(type, checkIn, checkOut));
-//    }
+    @GetMapping("/available")
+    public ResponseEntity<Page<RoomResponse>> getAvailableRooms(
+            @RequestParam RoomType type,
+            @RequestParam LocalDate checkIn,
+            @RequestParam LocalDate checkOut,Pageable pageable
+    ) {
+        return ResponseEntity.ok(roomService.getAvailableRooms(type, checkIn, checkOut,pageable));
+    }
     // POST /api/rooms
     @PostMapping
     public ResponseEntity<RoomResponse> createRoom(@Valid @RequestBody CreateRoomRequest request) {
