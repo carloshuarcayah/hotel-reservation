@@ -113,8 +113,8 @@ public class ReservationService{
         if (request.checkInDate() != null || request.checkOutDate() != null) {
             validateDates(newCheckIn, newCheckOut);
 
-            if (reservationRepository.existsOverlappingReservation(
-                    reservation.getRoom().getId(), newCheckIn, newCheckOut)) {
+            if (reservationRepository.existsOverlappingReservationExcluding(
+                    reservation.getRoom().getId(), reservation.getId(), newCheckIn, newCheckOut)) {
                 throw new IllegalStateException(
                         "Room already has a reservation for the selected dates");
             }

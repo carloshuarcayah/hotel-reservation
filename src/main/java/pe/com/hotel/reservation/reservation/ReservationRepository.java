@@ -27,5 +27,21 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             @Param("checkIn") LocalDate checkIn,
             @Param("checkOut") LocalDate checkOut
     );
+
+    @Query("""
+    SELECT COUNT(r) > 0 FROM Reservation r
+    WHERE r.room.id = :roomId
+    AND r.id != :excludeId
+    AND r.status IN ('PENDING', 'CONFIRMED')
+    AND r.active = true
+    AND r.checkInDate < :checkOut
+    AND r.checkOutDate > :checkIn
+""")
+    boolean existsOverlappingReservationExcluding(
+            @Param("roomId") Long roomId,
+            @Param("excludeId") Long excludeId,
+            @Param("checkIn") LocalDate checkIn,
+            @Param("checkOut") LocalDate checkOut
+    );
 }
 
