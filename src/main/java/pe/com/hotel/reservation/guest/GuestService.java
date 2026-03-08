@@ -53,6 +53,7 @@ public class GuestService {
                 .email(request.email())
                 .phone(request.phone())
                 .documentNumber(request.documentNumber())
+                .active(true)
                 .build();
 
         return GuestResponse.fromEntity(guestRepository.save(guest));

@@ -34,7 +34,6 @@ public class Reservation {
     private Guest guest;
 
     @Column(name = "check_in_date", nullable = false)
-    // LocalDate = solo fecha, sin hora. Perfecto para check-in/check-out
     private LocalDate checkInDate;
 
     @Column(name = "check_out_date", nullable = false)
@@ -57,4 +56,8 @@ public class Reservation {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private Boolean active=true;
 }
